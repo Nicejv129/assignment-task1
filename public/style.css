@@ -1,0 +1,54 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to bottom right, #1e3c72, #2a5298);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login-container {
+  text-align: center;
+  color: white;
+}
+
+.white {
+  color: white;
+  font-size: 2.5em;
+}
+
+.orange {
+  color: orange;
+  font-size: 2.5em;
+}
+
+.arrow {
+  font-size: 2em;
+  margin: 10px 0;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+input {
+  padding: 10px;
+  margin: 10px;
+  width: 250px;
+  border: none;
+  border-radius: 5px;
+}
+
+button {
+  background-color: orange;
+  color: white;
+  padding: 10px;
+  width: 270px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1em;
+  cursor: pointer;
+}
