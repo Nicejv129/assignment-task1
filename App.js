@@ -1,3 +1,7 @@
+// App.js
+// React Native (Expo) example implementing navigation, map markers, event details,
+// dynamic status box, volunteer apply/unapply, and map fitting to user + events.
+
 import React, { useRef, useState, useContext, createContext, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert, Platform } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
