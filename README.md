@@ -1,38 +1,101 @@
-# Volunteam App
+# Assignment Task 1 – Event Map Volunteer App
 
-## Setting up the fake API (json-server)
+This project is a React Native / Expo application that displays community events on a map and lets users view details and apply as volunteers. It demonstrates problem‑solving skills, state management, offline caching, and automated testing for a mobile app.
 
-Update the file `src/services/api.ts`.
+## Features
 
-Before running your 'json-server', get your computer's IP address and update your baseURL to `http://your_ip_address_here:3333` and then run:
+- Shows a map with markers for multiple community events.
+- Taps on a marker navigate to an event details screen.
+- Users can apply or unapply as volunteers for an event.
+- Shows contact options (Call / Text) for events where the current user is already a volunteer.
+- Fetches events from a remote API with offline caching in async storage.
+- Basic Jest test suite using React Native Testing Library.
 
-```
-npx json-server --watch db.json --port 3333 --host your_ip_address_here  -m ./node_modules/json-server-auth
-```
+## Technology Stack
 
-To access your server online without running json-server locally, you can set your baseURL to:
+- **Runtime / Framework**: React Native, Expo
+- **Language**: JavaScript / TypeScript tooling
+- **Navigation**: `@react-navigation/native`, `@react-navigation/stack`
+- **State / Storage**: `@react-native-async-storage/async-storage`
+- **Networking / Connectivity**: `fetch`, `@react-native-community/netinfo`
+- **Testing**: Jest, `@testing-library/react-native`, `@testing-library/jest-native`
+- **Misc**: `react-native-maps`, UUID, and other typical Expo RN dependencies
 
-```
-https://my-json-server.typicode.com/<your-github-username>/<your-github-repo>
-```
+## Project Structure
 
-To use `my-json-server`, make sure your `db.json` is located at the repo root.
+- `src/utils/eventService.js` – Fetches events from the API and manages local cache using AsyncStorage and NetInfo.
+- `__tests__/events.test.js` – Integration-style tests for the main event map flow.
+- `__mocks__/fileMock.js` – Jest mock for static file imports.
+- `jest.config.js` – Jest configuration for React Native and asset mapping.
+- `package.json` / `yarn.lock` / `package-lock.json` – Dependencies and scripts.
 
-## Setting up the image upload API
+## Event Fetching and Offline Cache
 
-Update the file `src/services/imageApi.ts`.
+The `fetchEventsWithCache` function in `src/utils/eventService.js`:
 
-You can use any hosting service of your preference. In this case, we will use ImgBB API: https://api.imgbb.com/.
-Sign up for free at https://imgbb.com/signup, get your API key and add it to the .env file in your root folder.
+- Checks network connectivity using NetInfo.
+- If online:
+  - Calls a configured events API endpoint.
+  - Parses the JSON response.
+  - Persists it into AsyncStorage under the `@events_cache` key.
+- If offline or any error occurs:
+  - Attempts to read and return the last cached events from AsyncStorage.
+  - Falls back to an empty array when no cache is available.
 
-To run the app in your local environment, you will need to set the IMGBB_API_KEY when starting the app using:
+This design allows the events list to keep working with previously loaded data even when the device loses connectivity.
 
-```
-IMGBB_API_KEY="insert_your_api_key_here" npx expo start
-```
+## Testing
 
-When creating your app build or publishing, import your secret values to EAS running:
+The test suite in `__tests__/events.test.js` uses React Native Testing Library and Jest to verify key user flows:
 
-```
-eas secret:push
-```
+- Renders the main screen with the map and event markers (map is mocked to avoid native rendering issues).
+- Pressing a marker navigates to the event details screen and shows an event title.
+- Users can:
+  - Press the **Volunteer** button to apply.
+  - Press the button again to unapply.
+  - See text feedback update when applying/unapplying.
+- For an event where the current user is already a volunteer (e.g. “Food Bank Sorting”), the details screen shows **Call** and **Text** contact buttons.
+
+`jest.config.js` configures React Native preset, jsdom test environment, asset mocks, and the Jest Native matchers.
+
+## Scripts
+
+Common scripts in `package.json`:
+
+- `npm start` / `yarn start` – Start the Expo development server.
+- `npm run android` – Run the app on an Android emulator or device.
+- `npm run ios` – Run the app on an iOS simulator or device.
+- `npm run web` – Run the app in a web browser (Expo for web).
+- `npm test` – Run Jest tests.
+
+> Note: Make sure to run `npm install` or `yarn install` before starting or testing the application.
+
+## Getting Started
+
+1. Clone the repository:
+git clone https://github.com/Nicejv129/assignment-task1.git
+cd assignment-task1
+
+2. Install dependencies:
+npm install
+
+or
+yarn install
+
+3. Configure the events API endpoint in `src/utils/eventService.js` (`EVENTS_API` constant).
+   npm start
+   
+4. Start the app:
+
+5. Run tests:
+   npm test
+
+
+## Assignment Context
+
+This repository is part of “Project 2 – Test Application by Demonstrating Problem Solving Skills” from the course template. It focuses on:
+
+- Adding a network/caching service for events.
+- Writing automated tests around navigation and user interaction.
+- Updating project configuration and dependencies to support testing in React Native.
+
